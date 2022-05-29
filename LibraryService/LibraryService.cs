@@ -8,32 +8,55 @@ public sealed class LibraryService : ILibraryService
   public LibraryService() { }
 
   public IItem GetItem(string id)
-  {
-    // TODO: Implement this method
-    throw new NotImplementedException();
-  }
+    {
+        //parts.Find(x => x.PartName.Contains("seat"));
+
+      var foundItem = _items.Find(item => item.Id == id);
+        if (foundItem == null)
+        {
+            throw new InvalidOperationException();
+        }
+        else
+        { return foundItem;
+        }
+    }  
 
   public void AddItem(IItem item)
   {
-    // TODO: Implement this method
-    throw new NotImplementedException();
+        if (_items.Contains(item))
+        {
+            throw new InvalidOperationException();
+        }
+        else
+        {
+            _items.Add(item);
+        }
   }
 
   public void RemoveItem(string id)
   {
-    // TODO: Implement this method
-    throw new NotImplementedException();
+    _items.Remove(GetItem(id));
+
   }
 
   public void BorrowItem(string id, Person borrower)
   {
-    // TODO: Implement this method
-    throw new NotImplementedException();
+        var book = GetItem(id); 
+        if (!(book.IsAvailable()))
+        {
+            throw new InvalidOperationException();
+        }
+        else
+        {
+            book.BorrowItem(borrower);
+        }
+
   }
 
   public void ReturnItem(string id, Person returnee)
   {
-    // TODO: Implement this method
-    throw new NotImplementedException();
+        var item = GetItem(id);
+        item.ReturnItem(returnee);
+
   }
 }
